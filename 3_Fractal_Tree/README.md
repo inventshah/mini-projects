@@ -1,7 +1,7 @@
-#Fractal Tree Generator
+# Fractal Tree Generator
 Fractal tree generator graphical user interface implemented in Java.
 
-###How to Use:
+### How to Use:
 Download the 3\_Fractal\_Tree folder. Compile and run with `javac DrawingPanel.java && java DrawingPanel`
 
 The tree starts with 2 branches, every time `Add` is pressed, another set of branches will be added.
@@ -18,5 +18,5 @@ Press `'s'` to screenshot the current tree as "tree.png"
 
 ![screenshot](images/largeTree.png)
 
-###Built With:
+### Built With:
 - Java 8
