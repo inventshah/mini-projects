@@ -6,3 +6,4 @@ Writing various programs to solidify programming skills or to learn about a conc
 3. [Fractal Trees](3_Fractal_Tree/README.md) (Java)
 4. [24 Game Solver](4_24Game/README.md) (JavaScript)
 5. [Mastermind](5_Mastermind/README.md) (JavaScript)
+6. [Custom Programming Language Lion](6_Lion/README.md) (Python)

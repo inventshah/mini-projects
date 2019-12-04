@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+# Sachin
+# Lion Programming
+
+import sys
+from repl import repl
+from run import run
+
+if __name__ == "__main__":
+	if len(sys.argv) == 1:
+		repl()
+	else:
+		run(sys.argv[1])

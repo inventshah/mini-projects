@@ -1,0 +1,38 @@
+# Variable assignment
+i : 0;
+name : 'lion';
+
+# Operations:
+i : 4 + 5;
+i : 2 / 3;
+i : name < 'here';
+
+# NATIVE FUNCTIONS
+print('Hello!');
+loop(5, print('Looping!'));
+a : neg(1);
+print(a);
+a : str(a);
+print(a);
+
+cond : 5;
+if(cond < 6, print('Less'), print('More'));
+
+# FUNCTIONS
+sum : (a, b){
+	a + b;
+};
+print(sum(2, 3));
+
+# GLOBAL FUNCTIONS
+i : 0;
+iterate : {
+	i : i + 1;
+	i;
+};
+
+wrapper : (){
+	print(iterate());
+};
+
+loop(5, wrapper());
