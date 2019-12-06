@@ -1,38 +1,54 @@
-# Variable assignment
+# Variable assignment and Operations
 i : 0;
 name : 'lion';
+sum : 4 + 5;
+division : 2 / 3;
 
-# Operations:
-i : 4 + 5;
-i : 2 / 3;
-i : name < 'here';
+i : name < 'here'; # Reassign i to a boolean
 
-# NATIVE FUNCTIONS
-print('Hello!');
-loop(5, print('Looping!'));
-a : neg(1);
-print(a);
-a : str(a);
-print(a);
+types : sum ~ i;
+
+multi : a : b : c : d : 16;  # Assign mulitple variables to the same value
+
+# Native Functions
+name : ask('What is your name?');
+print('Hello, ' + name);
+
+loop(5, "print('I am looping!');");
+
+a : ~str(3.14);
+print('See I can convert numbers to strings! ~str(3.14) = ' + a);
 
 cond : 5;
-if(cond < 6, print('Less'), print('More'));
+if(cond < 3, print('Less than 3'), print('More than 3'));
+if(cond ~ 6, print('Same types!'), print('Different types!'));
 
-# FUNCTIONS
+eval('a:3+3;a:concat("Hi from eval! 3 + 3 = ", a); print(a);');
+
+# Functions
 sum : (a, b){
 	a + b;
 };
-print(sum(2, 3));
+print(concat('Sum: ', sum(2,3)));
 
-# GLOBAL FUNCTIONS
+# Global functions
 i : 0;
 iterate : {
 	i : i + 1;
-	i;
 };
 
 wrapper : (){
-	print(iterate());
+	print(concat('iteration: ', iterate()));
 };
 
-loop(5, wrapper());
+while({i < 5;}, wrapper);
+
+# Combines function declaration and calling
+(){
+	ans : ask('Do you like Lion? y/n');
+	incorrect : {
+		print('WRONG! quitting now.');
+		quit();
+	};
+	if(ans = 'y', print('Yay! Correct!'), incorrect());
+}();

@@ -1,3 +1,5 @@
+from error_handler import none
+
 class Env:
 	def __init__(self, parent=None):
 		self.parent = parent
@@ -9,7 +11,7 @@ class Env:
 		elif self.parent is not None:
 			return self.parent.get(name)
 		else:
-			return None
+			return none
 
 	def set(self, name, value):
 		self.items[name] = value

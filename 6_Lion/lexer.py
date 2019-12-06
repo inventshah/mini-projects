@@ -4,9 +4,9 @@ from stream import Stream
 from string import ascii_letters, digits
 
 whitespace = ' \t\n'
-operation = '+-*/%&|=<>'
+operation = '+-*/%&|=<>~'
 string = ['"', "'"]
-special = '[]{}(),;:'
+special = '{}(),;:'
 symchars = ascii_letters + digits + "_"
 comment = '#'
 
@@ -30,7 +30,6 @@ def get_string(delimiter, stream):
 		if c is None:
 			eof(delimiter)
 			break;
-			# raise Exception("Missing %s for end of string" %delimiter)
 		ret += c
 	# Consume the last quote
 	stream.get()
@@ -65,5 +64,4 @@ def lex(chars):
 			pass_comment(stream)
 		else:
 			unexpected_token(c)
-			#raise Exception('Unexpected character: >>%s<<' %c)
 	return ret

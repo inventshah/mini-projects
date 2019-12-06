@@ -18,23 +18,23 @@ class Parser:
 		if key in ['number', 'string', 'symbol']:
 			return self.get_expression((key, value))
 		elif key == 'operation':
-			second_arg = self.get_expression(None)
+			second_arg = self.get_expression(none)
 			return self.get_expression(("operation", value, prev, second_arg))
 		elif key == '(':
 			args = self.expression_list_from_next(')', ',')
-			if prev is None:
+			if prev == none:
 				func_body = self.expression_list(';', '}')
 				return self.get_expression(("function", args or [], func_body))
 			else:
 				return self.get_expression(("call", prev, args))
 		elif key == ':':
-			if prev is None:
+			if prev == none:
 				expected('nothing', 'variable')
 				return none
 			if prev[0] != 'symbol':
 				expected(prev[0], 'variable')
 				return none
-			second_arg = self.get_expression(None)
+			second_arg = self.get_expression(none)
 			return self.get_expression(("assignment", prev, second_arg))
 		elif key == "{":
 			func_body = self.expression_list_from_next('}', ';')
@@ -52,8 +52,8 @@ class Parser:
 		if key != end:
 			list_parser = Parser(self.tokens, [seperation, end])
 			while key != end:
-				exp = list_parser.get_expression(None)
-				if exp is not None:
+				exp = list_parser.get_expression(none)
+				if exp != none:
 					ret.append(exp)
 				(key, value) = self.tokens.get()
 				if self.error(end):
@@ -73,8 +73,8 @@ class Parser:
 		if key != end:
 			list_parser = Parser(self.tokens, [seperation, end])
 			while key != end:
-				exp = list_parser.get_expression(None)
-				if exp is not None:
+				exp = list_parser.get_expression(none)
+				if exp != none:
 					ret.append(exp)
 				(key, value) = self.tokens.next
 				self.tokens.get()
@@ -92,8 +92,8 @@ def parse(tokens):
 	parser = Parser(Stream(tokens), EOL)
 	ret = []
 	while parser.tokens.next is not None:
-		exp = parser.get_expression(None)
-		if exp is not None:
+		exp = parser.get_expression(none)
+		if exp != none:
 			ret.append(exp)
 		parser.tokens.get()
 	return ret

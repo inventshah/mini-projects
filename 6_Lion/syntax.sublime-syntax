@@ -5,7 +5,7 @@ file_extensions: [lion]
 scope: source.lion
 contexts:
   main:
-    - match: \b(if|loop|quit|print)\b
+    - match: \b(if|loop|quit|print|while)\b
       scope: keyword.control
     - match: '"'
       push: double_quotes

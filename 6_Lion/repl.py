@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
-
 from lexer import lex
 from parser import parse
 from eval import eval_list
 from env import Env
 from stdlib import load_lib
+
+import readline
 
 def token_str(token):
 	if type(token) != tuple:
@@ -26,25 +26,15 @@ def token_str(token):
 		return '<%s | symbol>'%str(v[0])
 	return '<null>'
 
-def new_line():
-	print('***', end = ' ')
-
-def repl():
+def repl(env):
 	print('Lion Programming')
-	new_line()
-	env = Env(None)
-	load_lib(env)
 	line = ''
 	results = None
 	while True:
-		line = input()
+		line = input('*** ')
 		if len(line) != 0:
 			if line[-1] != ';':
 				line += ';'
 			results = eval_list(parse(lex(line)), env)
 		if results is not None:
 			print(token_str(results))
-		new_line()
-
-if __name__ == "__main__":
-	repl()

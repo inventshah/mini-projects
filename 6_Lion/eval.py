@@ -1,18 +1,34 @@
 from error_handler import none, unknown, expected, type_mismatch, parameter_warning, eprint
 from env import Env
 
-nums_only = '-*/&|'
+nums_only = '-/&|'
 
 def isnum(arg):
 	return type(arg) == float
 
+def one_and_one(t1, t2):
+	return t1[0] == 'number' and t2[0] == 'string'
+
 def operation(expr, env):
-	arg1 = eval_expression(expr[2], env)
-	arg2 = eval_expression(expr[3], env)
+	arg1 = eval_expression(expr[2], env) if expr[2] != none else none
+	arg2 = eval_expression(expr[3], env) if expr[3] != none else none
 	operator = expr[1]
+
+	if arg1 == none and arg2 != none and operator == '-':
+		return ('number', -arg2[1])
+
 	if operator in nums_only:
 		if isnum(arg1[1]) and isnum(arg2[1]):
-			return ('number', eval(' %f %s %f' % (arg1[1], operator, arg2[1])))
+			return ('number', eval('%f %s %f' % (arg1[1], operator, arg2[1])))
+		else:
+			expected(arg1[0] if type(arg1[1]) != float else arg2[0], 'number')
+	elif operator == '*':
+		if isnum(arg1[1]) and isnum(arg2[1]):
+			return ('number', arg1[1] * arg2[1])
+		elif arg1[0] == 'number' and arg2[0] == 'string':
+			return ('string', int(arg1[1]) * arg2[1])
+		elif arg1[0] == 'string' and arg2[0] == 'number':
+			return ('string', arg1[1] * int(arg2[1]))
 		else:
 			expected(arg1[0] if type(arg1[1]) != float else arg2[0], 'number')
 	elif operator == '+':
@@ -24,10 +40,14 @@ def operation(expr, env):
 		return ('string', str(arg1[1] == arg2[1]))
 	elif operator in '<>':
 		if type(arg1[1]) == type(arg2[1]):
-			return ('string', str(eval('"%s" %s "%s"' % (str(arg1[1]), operator, str(arg2[1])))))
+			return ('string', str(eval('%s %s %s' % (repr(arg1[1]), operator, repr(arg2[1])))))
 		type_mismatch(arg1[0], arg2[0])
+	elif operator == '~':
+		if (arg1 == none):
+			return ('string', arg2[0])
+		return ('string', str(arg1[0] == arg2[0]))
 	else:
-		unknown(expr[1])
+		unknown(operator)
 
 def call(expr, env):
 	evaled_expr = eval_expression(expr[1], env)
@@ -62,11 +82,9 @@ def eval_arguments(expr, env):
 		return none
 	elif key == 'symbol':
 		ret = env.get(value[0])
-		if ret is None:
+		if ret == none:
 			unknown(value[0])
-			return none
-		else:
-			return ret
+		return ret
 	elif key == 'assignment':
 		arg = eval_expression(value[1], env)
 		env.set(value[0][1], arg)
@@ -90,12 +108,9 @@ def eval_expression(expr, env):
 		return none
 	elif key == 'symbol':
 		ret = env.get(value[0])
-
-		if ret is None:
+		if ret == none and value[0] != 'none':
 			unknown(value[0])
-			return none
-		else:
-			return ret
+		return ret
 	elif key == 'assignment':
 		arg = eval_expression(value[1], env)
 		env.set(value[0][1], arg)

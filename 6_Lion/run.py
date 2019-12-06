@@ -11,7 +11,5 @@ def get_chars(filename):
 			c = file.read(1)
 			yield c
 
-def run(filename):
-	env = Env(None)
-	load_lib(env)
+def run(filename, env):
 	eval_list(parse(lex(get_chars(filename))), env)

@@ -6,9 +6,13 @@
 import sys
 from repl import repl
 from run import run
+from env import Env
+from stdlib import load_lib
 
 if __name__ == "__main__":
+	env = Env(None)
+	load_lib(env)
 	if len(sys.argv) == 1:
-		repl()
+		repl(env)
 	else:
-		run(sys.argv[1])
+		run(sys.argv[1], env)
