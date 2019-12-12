@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+import sys
+from stream import Stream
+
+# Sachin
+# Convert python files with brackets and semicolons instead of indents and newlines
+
+whitespace = '\t\n'
+special = '){};'
+
+def get_generic(first, stream, blacklist):
+	ret = first
+	c = stream.next
+	while stream.next is not None and stream.next not in blacklist:
+		ret += stream.get()
+	return ret
+
+def get_symbol(first_char, stream):
+	return get_generic(first_char, stream, whitespace + special)
+
+def lex(chars):
+	stream = Stream(chars)
+	ret = []
+	while stream.next is not None:
+		c = stream.get()
+		if c in special:
+			ret.append(c)
+		elif c not in whitespace:
+			ret.append(get_symbol(c, stream))
+	return ret
+
+def get_chars(filename):
+	with open(filename, 'r') as file:
+		c = ' '
+		while c != '':
+			c = file.read(1)
+			yield c
+
+def topy(tokens, filename):
+	indent = 0
+	brackets = 0
+	stream = Stream(tokens)
+	with open(filename, 'w') as file:
+		while stream.next is not None:
+			c = stream.get()
+			if c == ')' and stream.next == '{':
+				indent += 1
+				file.write('):\n')
+				stream.get()
+			elif c == ';':
+				file.write('\n')
+			elif c == '{':
+				brackets += 1
+				file.write('{')
+			elif c == '}':
+				if brackets != 0:
+					brackets -= 1
+					file.write('}')
+				else:
+					indent -= 1
+			elif c == ')':
+				file.write(')')
+			else:
+				file.write('\t'*indent+c)
+
+if __name__ == "__main__":
+	if len(sys.argv) == 1:
+		print('Error: Please supply a file')
+	else:
+		name = sys.argv[1]
+		print('Converting indentless python file, to an runnable python file')
+		tokens = lex(get_chars(name))
+		topy(tokens, 'indented%s' % name)
+		print('Finished convertion. Run python indented%s' % name)
